@@ -11,6 +11,7 @@ const questions = [
   { name: 'name', message: 'Enter the name of your extension: ' },
   { name: 'description', message: 'Enter the description of your extension: ' },
   { name: 'background', message: 'Include background service worker? (y/n): ' },
+  { name: 'contentScripts', message: 'Include content scripts? (y/n): ' },
   { name: 'popup', message: 'Include popup? (y/n): ' },
   { name: 'options', message: 'Include options page? (y/n): ' }
 ];
@@ -36,7 +37,7 @@ const askQuestion = (index) => {
 };
 
 const generateExtension = () => {
-  const { name, description, background, popup, options } = answers;
+  const { name, description, background, contentScripts, popup, options } = answers;
   const dirName = name.toLowerCase().replace(/\s+/g, '-');
   const basePath = path.join(__dirname, dirName);
 
@@ -64,6 +65,17 @@ const generateExtension = () => {
     };
   }
 
+  if(contentScripts) {
+    manifest.content_scripts = [
+      {
+        "matches": ["<all_urls>"],
+        "css": ["content.css"],
+        "js": ["content.js"], 
+        "exclude_matches": []
+      }
+    ]
+  }
+
   if (popup) {
     manifest.action.default_popup = 'popup.html';
   }
@@ -85,6 +97,10 @@ const generateExtension = () => {
   // Create optional files based on features
   if (background) {
     fs.writeFileSync(path.join(basePath, 'background.js'), '// Background service worker');
+  }
+  if (contentScripts) {
+    fs.writeFileSync(path.join(basePath, 'content.js'), '// Content script JS');
+    fs.writeFileSync(path.join(basePath, 'content.css'), '// Content script JS');
   }
 
   if (popup) {
