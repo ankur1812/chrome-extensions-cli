@@ -1,0 +1,21 @@
+{
+  "name": "chrome-extensions-cli",
+  "version": "1.0.0",
+  "description": "A CLI tool to build chrome extensions",
+  "bin": {
+    "chrome-extensions-cli": "node ./gen-extension.js"
+  },
+  "keywords": [
+    "cli",
+    "chrome",
+    "extensions",
+    "generator"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ankur1812/chrome-extensions-generator.git"
+  },
+  "homepage": "https://github.com/ankur1812/chrome-extensions-generator#readme"
+}

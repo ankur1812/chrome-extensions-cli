@@ -18,7 +18,7 @@ const questions = [
 
 let answers = {};
 
-const askQuestion = (index) => {
+const askQuestions = (index) => {
   if (index >= questions.length) {
     generateExtension();
     rl.close();
@@ -37,7 +37,7 @@ const askQuestion = (index) => {
     } else {
       answers[questions[index].name] = normalizedAnswer === 'y';
     }
-    askQuestion(index + 1);
+    askQuestions(index + 1);
   });
 };
 
@@ -54,7 +54,8 @@ function duplicateFile(sourcePath, destinationPath) {
 const generateExtension = () => {
   const { name, description, background, contentScripts, popup, options } = answers;
   const dirName = name.toLowerCase().replace(/\s+/g, '-');
-  const basePath = path.join(__dirname, dirName);
+  let __pwdTarget = process.cwd();
+  const basePath = path.join(__pwdTarget, dirName);
 
   // Create extension directory
   fs.mkdirSync(basePath, { recursive: true });
@@ -119,7 +120,7 @@ const generateExtension = () => {
   }
   if (contentScripts) {
     fs.writeFileSync(path.join(basePath, 'content.js'), '// Content script JS');
-    fs.writeFileSync(path.join(basePath, 'content.css'), '// Content script JS');
+    fs.writeFileSync(path.join(basePath, 'content.css'), '/* Content script CSS */');
   }
 
   if (popup) {
@@ -167,5 +168,14 @@ const generateExtension = () => {
   console.log('Extension generated successfully!');
 };
 
-// Start asking questions
-askQuestion(0);
+function main() {
+  const args = process.argv.slice(2); // Get command line arguments, ignoring the first two (node and script path)
+
+  if (args.length === 0 || args[0] != 'generate') {
+    console.error('Usage: >> chrome-extensions-cli generate');
+    process.exit(1);
+  }
+  askQuestions(0);
+}
+
+main();
