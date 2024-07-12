@@ -25,8 +25,13 @@ const askQuestion = (index) => {
     return;
   }
 
-  rl.question(questions[index].message, (answer) => {
+  rl.question(('> ' + questions[index].message), (answer) => {
     const normalizedAnswer = answer.trim().toLowerCase();
+    if(!normalizedAnswer && questions[index].name == 'name') {
+      console.log('\n(Warning) Extension name is required. Please run the CLI again and enter the correct details.\n');
+      rl.close();
+      return;
+    }
     if (questions[index].name === 'name' || questions[index].name === 'description') {
       answers[questions[index].name] = answer;
     } else {
@@ -35,6 +40,16 @@ const askQuestion = (index) => {
     askQuestion(index + 1);
   });
 };
+
+function duplicateFile(sourcePath, destinationPath) {
+  fs.copyFile(sourcePath, destinationPath, (err) => {
+    if (err) {
+      // console.error('* Error copying file:', err);
+    } else {
+      // console.log(` * Added icon | ${destinationPath}`);
+    }
+  });
+}
 
 const generateExtension = () => {
   const { name, description, background, contentScripts, popup, options } = answers;
@@ -89,9 +104,13 @@ const generateExtension = () => {
 
   // Create icons directory and placeholder icons
   const iconsDir = path.join(basePath, 'icons');
+  const __iconsBaseDir = path.join(__dirname, 'icons');
   fs.mkdirSync(iconsDir);
   ['icon16.png', 'icon48.png', 'icon128.png'].forEach(icon => {
-    fs.writeFileSync(path.join(iconsDir, icon), ''); // Placeholder for icon files
+    // fs.writeFileSync(path.join(iconsDir, icon), ''); // Placeholder for icon files
+    const sourceFilePath = path.join(__iconsBaseDir, icon);
+    const destinationFilePath = path.join(iconsDir, icon);
+    duplicateFile(sourceFilePath, destinationFilePath);
   });
 
   // Create optional files based on features
