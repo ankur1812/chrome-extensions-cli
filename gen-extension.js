@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
@@ -24,8 +25,9 @@ const askQuestions = (index) => {
     rl.close();
     return;
   }
+  console.log('');
 
-  rl.question(('> ' + questions[index].message), (answer) => {
+  rl.question((' > ' + questions[index].message), (answer) => {
     const normalizedAnswer = answer.trim().toLowerCase();
     if(!normalizedAnswer && questions[index].name == 'name') {
       console.log('\n(Warning) Extension name is required. Please run the CLI again and enter the correct details.\n');
@@ -165,7 +167,7 @@ const generateExtension = () => {
     fs.writeFileSync(path.join(basePath, 'options.js'), optionsJs);
   }
 
-  console.log('Extension generated successfully!');
+  console.log('\nExtension generated successfully!');
 };
 
 function main() {
