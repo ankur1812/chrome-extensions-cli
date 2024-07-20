@@ -21,7 +21,7 @@ The `generate` command will trigger the node script responsible for the generati
 $ chrome-extensions-cli generate
 
  > Enter the name of your extension: Hello World
- > Enter the description of your extension: Simple hello-world extension created using the chrome-extensions-cli npm package.
+ > Enter the description of your extension: A simple hello-world extension created using the chrome-extensions-cli npm package.
  > Include background service worker? (y/n): y
  > Include content scripts? (y/n): y
  > Include popup? (y/n): y

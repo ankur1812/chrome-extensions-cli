@@ -25,8 +25,6 @@ const askQuestions = (index) => {
     rl.close();
     return;
   }
-  console.log('');
-
   rl.question((' > ' + questions[index].message), (answer) => {
     const normalizedAnswer = answer.trim().toLowerCase();
     if(!normalizedAnswer && questions[index].name == 'name') {
@@ -177,6 +175,7 @@ function main() {
     console.error('Usage: >> chrome-extensions-cli generate');
     process.exit(1);
   }
+  console.log('');
   askQuestions(0);
 }
 
